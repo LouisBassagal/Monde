@@ -27,6 +27,8 @@ void Window::loop() {
 	glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	glUseProgram(m_shaderProgram);
+
 	for each(auto primitive in m_primitives) {
 		primitive->draw();
 	}

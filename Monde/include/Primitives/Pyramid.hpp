@@ -4,10 +4,10 @@
 #include <GL/gl.h>
 #include <Vector3.hpp>
 
-class Triangle : public Primitive {
+class Pyramid : public Primitive {
 	public:
-		Triangle();
-		~Triangle() override;
+		Pyramid();
+		~Pyramid() override;
 
 		virtual void draw(unsigned int program) final;
 		virtual void translate(const Vector3& position) final;

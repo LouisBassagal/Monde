@@ -38,6 +38,7 @@ int main() {
 	window.createShaderProgram();
 
 	window.test();
+
 	while (!glfwWindowShouldClose(w)) {
 		glfwPollEvents();
 

@@ -11,7 +11,7 @@ class Square : public Primitive
 		Square();
 		~Square() override;
 
-		virtual void draw() final;
+		virtual void draw(unsigned int program) final;
 
 	private:
 		std::vector<Vector3> m_vertices;

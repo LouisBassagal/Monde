@@ -8,6 +8,8 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <Primitives/Triangle.hpp>
+#include <Primitives/Pyramid.hpp>
+#include <Camera.hpp>
 
 #include <../include/ShaderReader.hpp>
 
@@ -22,11 +24,14 @@ class Window {
 		GLFWwindow *getWindow();
 
 		void test();
+		void test2();
 
 	private:
 		unsigned int m_shaderProgram;
 
 		GLFWwindow *m_window;
+
+		Camera m_camera;
 
 		std::vector<Primitive *> m_primitives;
 };

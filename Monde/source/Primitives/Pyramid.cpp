@@ -1,11 +1,33 @@
-#include <../include/Primitives/Triangle.hpp>
+#include <Primitives/Pyramid.hpp>
 #include <iostream>
 
-Triangle::Triangle() {
+Pyramid::Pyramid() {
 	m_vertices = {
-		Vector3(-0.5f, -0.5f, 0.0f), Vector3(1.f, 0.f, 0.f),
-		Vector3(0.5f, -0.5f, 0.0f), Vector3(0.f, 1.f, 0.f),
-		Vector3(0.0f, 0.5f, 0.0f), Vector3(0.f, 0.f, 1.f)
+		// Base
+		Vector3(.5f, .0f, .5f), Vector3(1.f, 0.f, .0f),
+		Vector3(.5f, .0f, -.5f), Vector3(.0f, 0.f, 1.f),
+		Vector3(-.5f, 0.f, .5f), Vector3(.0f, 0.f, 1.f),
+
+		Vector3(.5f, .0f, -.5f), Vector3(0.f, 0.f, 1.f),
+		Vector3(-.5f, .0f, .5f), Vector3(0.f, 0.f, 1.f),
+		Vector3(-.5f, .0f, -.5f), Vector3(1.f, 0.f, .0f),
+
+		// Faces
+		Vector3(.5f, .0f, .5f), Vector3(1.f, 0.f, 0.f),
+		Vector3(.0f, 1.f, .0f), Vector3(0.f, 1.f, 0.f),
+		Vector3(-.5f, .0f, .5f), Vector3(0.f, 0.f, 1.f),
+
+		Vector3(.5f, .0f, -.5f), Vector3(0.f, 0.f, 1.f),
+		Vector3(.0f, 1.f, .0f), Vector3(0.f, 1.f, 0.f),
+		Vector3(.5f, .0f, .5f), Vector3(1.f, 0.f, 0.f),
+
+		Vector3(-.5f, .0f, -.5f), Vector3(1.f, 0.f, 0.f),
+		Vector3(.0f, 1.f, .0f), Vector3(0.f, 1.f, 0.f),
+		Vector3(-.5f, .0f, .5f), Vector3(0.f, 0.f, 1.f),
+
+		Vector3(-.5f, .0f, -.5f), Vector3(1.f, 0.f, 0.f),
+		Vector3(.0f, 1.f, .0f), Vector3(0.f, 1.f, 0.f),
+		Vector3(.5f, .0f, -.5f), Vector3(0.f, 0.f, 1.f),
 	};
 
 	glGenVertexArrays(1, &m_VAO);
@@ -22,9 +44,9 @@ Triangle::Triangle() {
 	glEnableVertexAttribArray(1);
 }
 
-Triangle::~Triangle() {}
+Pyramid::~Pyramid() {}
 
-void Triangle::draw(unsigned int program) {
+void Pyramid::draw(unsigned int program) {
 	glBindVertexArray(m_VAO);
 
 	glEnable(GL_DEPTH_TEST);
@@ -33,11 +55,11 @@ void Triangle::draw(unsigned int program) {
 	glDisable(GL_DEPTH_TEST);
 }
 
-void Triangle::rotate(float angle, const Vector3& vector) {
+void Pyramid::rotate(float angle, const Vector3& vector) {
 	m_model = glm::rotate(m_model,  glm::radians(angle), glm::vec3(vector.m_x, vector.m_y, vector.m_z));
 }
 
-void Triangle::setVertices(std::vector<Vector3> vertices) {
+void Pyramid::setVertices(std::vector<Vector3> vertices) {
 	m_vertices = vertices;
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -50,14 +72,14 @@ void Triangle::setVertices(std::vector<Vector3> vertices) {
 	glEnableVertexAttribArray(1);
 }
 
-glm::mat4 *Triangle::getModelMatrix() {
+glm::mat4 *Pyramid::getModelMatrix() {
 	return &m_model;
 }
 
-std::vector<Vector3> *Triangle::getVertices() {
+std::vector<Vector3> *Pyramid::getVertices() {
 	return &m_vertices;
 }
 
-void Triangle::translate(const Vector3& position) {
+void Pyramid::translate(const Vector3& position) {
 	m_model = glm::translate(m_model, glm::vec3(position.m_x, position.m_y, position.m_z));
 }

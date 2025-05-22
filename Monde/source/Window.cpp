@@ -2,8 +2,15 @@
 #include <iostream>
 
 Window::Window() {
-	m_window = glfwCreateWindow(1280, 720, "GLFW Window", nullptr, nullptr);
-	
+	m_window = glfwCreateWindow(1280, 720, "Mon Monde", nullptr, nullptr);
+
+	glViewport(0, 0, 1280, 720);
+
+	glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
+	});
+
+	m_camera.setProjectionMatrix(45.f, 1280.f / 720.f, 0.1f, 1000.f);
 }
 
 Window::~Window() {
@@ -19,19 +26,30 @@ GLFWwindow *Window::getWindow() {
 }
 
 void Window::test() {
-	auto triangle = new Triangle();
-	m_primitives.push_back(triangle);
+	Pyramid *t1 = new Pyramid();
+
+	m_primitives.push_back(t1);
+}
+
+void Window::test2() {
+	for each(auto p in m_primitives) {
+		p->rotate(0.1f, Vector3(.0f, 1.f, 0.f));
+	}
 }
 
 void Window::loop() {
 	glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(m_shaderProgram);
 
-	for each(auto primitive in m_primitives) {
-		primitive->draw();
-	}
+	m_camera.initViewMatrix(m_shaderProgram);
+	m_camera.initProjectionMatrix(m_shaderProgram);
+
+	test2();
+
+	for each(auto primitive in m_primitives)
+		primitive->draw(m_shaderProgram);
 }
 
 void Window::createShaderProgram() {

@@ -3,8 +3,8 @@
 #include <string>
 #include <fstream>
 
-constexpr const char *VERTEX_FILEPATH = "Z:/Projets/Monde/Monde/source/shaders/vertex.glsl";
-constexpr const char *FRAGMENT_FILEPATH = "Z:/Projets/Monde/Monde/source/shaders/fragment.glsl";
+constexpr const char *VERTEX_FILEPATH = "Z:/Projets/Monde/source/shaders/vertex.glsl";
+constexpr const char *FRAGMENT_FILEPATH = "Z:/Projets/Monde/source/shaders/fragment.glsl";
 
 class ShaderReader {
 	public:

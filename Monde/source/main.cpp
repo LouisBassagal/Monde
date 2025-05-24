@@ -7,21 +7,8 @@
 #include <Window.hpp>
 
 int main() {
-
-	if (glfwInit() == GLFW_FALSE) {
-		std::cerr << "Failed to initialize GLFW" << std::endl;
-		return -1;
-	}
-
 	Window window;
-	auto w = window.getWindow();
-
-	glfwMakeContextCurrent(w);
-
-	if (glewInit() != GLEW_OK) {
-		std::cerr << "Failed to initialize GLEW" << std::endl;
-		return -1;
-	}
+	auto* w = window.getWindow();
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();

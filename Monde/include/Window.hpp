@@ -13,6 +13,15 @@
 
 #include <../include/ShaderReader.hpp>
 
+struct Mouse {
+	public:
+		float x{ 0.f };
+		float y{ 0.f };
+
+		float oldX{ 0.f };
+		float oldY{ 0.f };
+};
+
 class Window {
 	public:
 		Window();
@@ -23,15 +32,26 @@ class Window {
 
 		GLFWwindow *getWindow();
 
+		Camera *getCamera();
+		Mouse *getMouse();
+
 		void test();
 		void test2();
 
 	private:
+
+		void checkInput();
+
 		unsigned int m_shaderProgram;
+
+		float m_deltaTime{ 0.f };
+		float m_lastFrame{ 0.f };
+		float m_currentFrame{ 0.f };
 
 		GLFWwindow *m_window;
 
 		Camera m_camera;
+		Mouse m_mouse;
 
 		std::vector<Primitive *> m_primitives;
 };

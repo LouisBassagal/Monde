@@ -27,10 +27,14 @@ add_executable(
 	source/main.cpp
 	source/Window.cpp
 	source/ShaderReader.cpp
-	source/Primitives/Triangle.cpp
 	source/Primitives/Pyramid.cpp
 	source/Vector3.cpp
 	source/Camera.cpp
+	source/Primitives/Sphere.cpp
+	"source/Primitives/Primitive.cpp"
+	
+	source/Lights/Light.cpp
+	source/Primitives/Cube.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm glfw opengl32.lib imgui::imgui GLEW::glew)

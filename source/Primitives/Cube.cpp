@@ -1,43 +1,63 @@
-#include <Primitives/Pyramid.hpp>
+#include <Primitives/Cube.hpp>
 #include <iostream>
 
-Pyramid::Pyramid() {
+Cube::Cube() {
 	m_vertices = {
-		// Base
-		{.5f, .0f, .5f}, {.5f, .0f, -.5f}, {-.5f, 0.f, .5f},
-		{.5f, .0f, -.5f}, {-.5f, .0f, .5f}, {-.5f, .0f, -.5f},
+		// Left
+		{.5f, .0f, .5f}, {.5f, .0f, -.5f}, {.5f, 1.f, .5f},
+		{.5f, 1.f, -.5f}, {.5f, .0f, -.5f}, {.5f, 1.f, .5f},
 
-		// Faces
-		{.5f, .0f, .5f}, {.0f, 1.f, .0f}, {-.5f, .0f, .5f},
+		// Front
+		{.5f, .0f, -.5f}, {.5f, 1.f, -.5f}, {-.5f, 1.f, -.5f},
+		{-.5f, .0f, -.5f}, {-.5f, 1.f, -.5f}, {.5f, .0f, -.5f},
 
-		{.5f, .0f, -.5f}, {.0f, 1.f, .0f}, {.5f, .0f, .5f},
+		// Right
+		{-.5f, .0f, .5f}, {-.5f, .0f, -.5f}, {-.5f, 1.f, .5f},
+		{-.5f, 1.f, -.5f}, {-.5f, .0f, -.5f}, {-.5f, 1.f, .5f},
 
-		{-.5f, .0f, -.5f},{.0f, 1.f, .0f}, {-.5f, .0f, .5f},
+		// Back
+		{.5f, .0f, .5f}, {.5f, 1.f, .5f}, {-.5f, 1.f, .5f},
+		{-.5f, .0f, .5f}, {-.5f, 1.f, .5f}, {.5f, .0f, .5f},
 
-		{-.5f, .0f, -.5f}, {.0f, 1.f, .0f}, {.5f, .0f, -.5f}
+		// Down
+		{.5f, .0f, .5f}, {-.5f, .0f, .5f}, {.5f, .0f, -.5f},
+		{-.5f, .0f, .5f}, {.5f, 0.f, -.5f}, {-.5f, .0f, -.5f},
+
+		// Up
+		{.5f, 1.f, .5f}, {-.5f, 1.f, .5f}, {.5f, 1.f, -.5f},
+		{-.5f, 1.f, .5f}, {.5f, 1.f, -.5f}, {-.5f, 1.f, -.5f},
 	};
 
 	m_normals = {
-		// Base
+		// Left
+		{1.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {1.f, 0.f, 0.f},
+		{1.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {1.f, 0.f, 0.f},
+
+		// Front
+		{0.f, 0.f, -1.f}, {0.f, 0.f, -1.f}, {0.f, 0.f, -1.f},
+		{0.f, 0.f, -1.f}, {0.f, 0.f, -1.f}, {0.f, 0.f, -1.f},
+
+		// Right
+		{-1.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {-1.f, 0.f, 0.f},
+		{-1.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {-1.f, 0.f, 0.f},
+
+		// Back
+		{0.f, 0.f, 1.f}, {0.f, 0.f, 1.f}, {0.f, 0.f, 1.f},
+		{0.f, 0.f, 1.f}, {0.f, 0.f, 1.f}, {0.f, 0.f, 1.f},
+
+		// Bottom
 		{0.f, -1.f, 0.f}, {0.f, -1.f, 0.f}, {0.f, -1.f, 0.f},
 		{0.f, -1.f, 0.f}, {0.f, -1.f, 0.f}, {0.f, -1.f, 0.f},
 
-		// Face 1
-		{0.f, 0.7071f, 0.7071f}, {0.f, 0.7071f, 0.7071f}, {0.f, 0.7071f, 0.7071f},
-
-		// Face 2
-		{0.8944f, 0.4472f, 0.f}, {0.8944f, 0.4472f, 0.f}, {0.8944f, 0.4472f, 0.f},
-
-		// Face 3
-		{-0.8944f, 0.4472f, 0.f}, {-0.8944f, 0.4472f, 0.f}, {-0.8944f, 0.4472f, 0.f},
-
-		// Face 4
-		{0.f, 0.7071f, -0.7071f}, {0.f, 0.7071f, -0.7071f}, {0.f, 0.7071f, -0.7071f}
+		// Top
+		{0.f, 1.f, 0.f}, {0.f, 1.f, 0.f}, {0.f, 1.f, 0.f},
+		{0.f, 1.f, 0.f}, {0.f, 1.f, 0.f}, {0.f, 1.f, 0.f}
 	};
 
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_verticesVBO);
 	glGenBuffers(1, &m_normalVBO);
+
 	glBindVertexArray(m_VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
@@ -46,7 +66,6 @@ Pyramid::Pyramid() {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
 	glEnableVertexAttribArray(0);
 
-
 	glBindBuffer(GL_ARRAY_BUFFER, m_normalVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3) * m_normals.size(), m_normals.data(), GL_STATIC_DRAW);
 
@@ -54,9 +73,9 @@ Pyramid::Pyramid() {
 	glEnableVertexAttribArray(1);
 }
 
-Pyramid::~Pyramid() {}
+Cube::~Cube() {}
 
-void Pyramid::draw(unsigned int program) {
+void Cube::draw(unsigned int program) {
 	glBindVertexArray(m_VAO);
 
 	m_normalMatrix = glm::transpose(glm::inverse(m_model));
@@ -71,14 +90,15 @@ void Pyramid::draw(unsigned int program) {
 	glUniform1f(glGetUniformLocation(program, "material.shininess"), m_material.shininess);
 
 	glUniform3f(glGetUniformLocation(program, "objectColor"), m_color.m_x, m_color.m_y, m_color.m_z);
+
 	glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
 	glDisable(GL_DEPTH_TEST);
 }
 
-glm::mat4 *Pyramid::getModelMatrix() {
+glm::mat4 *Cube::getModelMatrix() {
 	return &m_model;
 }
 
-std::vector<Vector3> *Pyramid::getVertices() {
+std::vector<Vector3> *Cube::getVertices() {
 	return &m_vertices;
 }

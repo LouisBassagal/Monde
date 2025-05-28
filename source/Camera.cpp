@@ -115,4 +115,5 @@ void Camera::update(unsigned int program) {
 
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, glm::value_ptr(m_view));
 	glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_FALSE, glm::value_ptr(m_projection));
+	glUniform3f(glGetUniformLocation(program, "cameraPos"), m_position.x, m_position.y, m_position.z);
 }

@@ -89,16 +89,34 @@ Mouse* Window::getMouse() {
 }
 
 void Window::test() {
-	Pyramid *t1 = new Pyramid();
+	std::unique_ptr<Cube> t1 = std::make_unique<Cube>();
+	std::unique_ptr<Pyramid> t2 = std::make_unique<Pyramid>();
+	std::unique_ptr<Pyramid> t3 = std::make_unique<Pyramid>();
+	//std::unique_ptr<ILight> light1 = std::make_unique<AmbiantLight>( Vector3{0.f, 0.f, 0.f}, Vector3{ .2f, .5f, .2f}, 1.f);
+	Material mat;
 
-	m_primitives.push_back(t1);
+	mat.shininess = 32.f;
+	t1->setMaterial(mat);
+	t1->setColor({ 0.3f, 0.5f, 0.f });
+	t1->rotate(45.f, { 0.f, 1.f, 0.f });
+
+	t2->setMaterial(mat);
+	t2->translate({ 2.f, 2.f, -2.f });
+	t2->setColor({ 0.f, .9f, 4.f });
+	t2->rotate(45.f, {1.f, 0.f, 0.5f});
+
+	t3->setMaterial(mat);
+	t3->translate({ -3.f, 2.f, -4.f });
+	t3->setColor({ 8.f, .4f, 1.f });
+	t3->rotate(45.f, { .2f, -.6f, .5f });
+
+	m_primitives.emplace_back(std::move(t1));
+	m_primitives.emplace_back(std::move(t2));
+	m_primitives.emplace_back(std::move(t3));
+	//m_lights.emplace_back(std::move(light1));
 }
 
-void Window::test2() {
-	for each(auto p in m_primitives) {
-		p->rotate(0.1f, Vector3(.0f, 1.f, 0.f));
-	}
-}
+void Window::test2() {}
 
 void Window::checkInput() {
 	// Camera inputs
@@ -120,7 +138,7 @@ void Window::checkInput() {
 }
 
 void Window::loop() {
-	glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.00f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	m_currentFrame = glfwGetTime();
 	m_deltaTime = m_currentFrame - m_lastFrame;
@@ -128,10 +146,14 @@ void Window::loop() {
 	glUseProgram(m_shaderProgram);
 
 	m_camera.update(m_shaderProgram);
+	updateLights(m_shaderProgram);
 
 	checkInput();
 
-	for each(auto primitive in m_primitives)
+	glUniform3f(glGetUniformLocation(m_shaderProgram, "lightPos"), 0, 2, 2);
+	glUniform3f(glGetUniformLocation(m_shaderProgram, "lightColor"), 1.f, 1.f, 1.f);
+
+	for each(auto &primitive in m_primitives)
 		primitive->draw(m_shaderProgram);
 	m_lastFrame = m_currentFrame;
 }
@@ -183,4 +205,11 @@ void Window::createShaderProgram() {
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	m_shaderProgram = shaderProgram;
+}
+
+void Window::updateLights(unsigned int program) {
+	for (auto& light : m_lights) {
+		Vector3 color = light->getColor();
+		glUniform3f(glGetUniformLocation(program, "lightColor"), color.m_x, color.m_y, color.m_z);
+	}
 }

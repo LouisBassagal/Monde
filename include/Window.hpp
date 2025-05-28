@@ -7,11 +7,15 @@
 #include <imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 #include <vector>
-#include <Primitives/Triangle.hpp>
-#include <Primitives/Pyramid.hpp>
 #include <Camera.hpp>
+#include <memory>
 
-#include <../include/ShaderReader.hpp>
+#include <ShaderReader.hpp>
+
+#include <Primitives/Pyramid.hpp>
+#include <Primitives/Cube.hpp>
+
+#include <Lights/ILight.hpp>
 
 struct Mouse {
 	public:
@@ -29,6 +33,7 @@ class Window {
 
 		void loop();
 		void createShaderProgram();
+		void updateLights(unsigned int program);
 
 		GLFWwindow *getWindow();
 
@@ -53,5 +58,6 @@ class Window {
 		Camera m_camera;
 		Mouse m_mouse;
 
-		std::vector<Primitive *> m_primitives;
+		std::vector<std::unique_ptr<IPrimitive>> m_primitives;
+		std::vector<std::unique_ptr<ILight>> m_lights;
 };

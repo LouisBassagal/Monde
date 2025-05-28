@@ -35,7 +35,6 @@ int main() {
 
 		window.loop();
 
-		ImGui::ShowDemoWindow();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(w);
